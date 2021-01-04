@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- bootstrap-table -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script  src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入日期得css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <!-- 引入上传文件的css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../js/bootstrap/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-fileinput/css/fileinput.css">
+</head>
+<body>
+<div id="mydiv">
+    <form class="form-inline">
+        <button type="button" onclick="souOrder(1)" class="btn">降序</button>
+        <button type="button" onclick="souOrder(2)" class="btn">升序</button>
+        <input style="display: none" value="0" id="order"/>
+        下单时间：
+        <input type="text" name="mindate" id="mindate" class="form-control nn"/>
+        <input type="text" name="maxdate" id="maxdate" class="form-control nn"/>
+        <a  onclick="javascript:souOrder()" class="btn btn-success glyphicon glyphicon-search">搜索</a>
+        <a  class="btn btn-success glyphicon" onclick="javascript:daochu()">导出</a>
+    </form>
+</div>
+<table class="table" id="mytable"></table>
+</body>
+<script>
+    $(function(){
+        query();
+    })
+    function daochu(){
+        location.href="../ticket/daochu"
+    }
+    function souOrder(order) {
+        $("#order").val(order);
+        $("#mytable").bootstrapTable("refresh");
+    }
+    function query(){
+        $("#mytable").bootstrapTable({
+            url:"../ticket/myorder",
+            pagination:true, //是否展示分页
+            pageList:[2, 4, 6, 8],
+            //分页组件
+            pageNumber:1,
+            pageSize:2,//默认每页条数 //
+            sidePagination:'server',//分页方式：client客户端分页，server服务端分页 （*
+            queryParams:function(){
+                return {
+                    page: this.pageNumber,
+                    rows:  this.pageSize,
+                    order:$("#order").val(),
+                    mindate:$("#mindate").val(),
+                    maxdate:$("#maxdate").val()
+
+                }; },
+            columns:[
+                {checkbox: true},
+                {field: 'id', title: 'id', align: 'center', width: 150},
+                {field: 'start_site', title: '出发站', align: 'center', width: 150},
+                {field: 'stop_site', title: '到达站', width: 150, align: 'center'},
+                {field: 'seat', title: '席别', width: 150, align: 'center',formatter:function (value,row,index){
+                        return value==1?"商务座":value==2?"一等座":value==3?"二等座":value==4?"硬卧":"硬座";
+                    }},
+                {field: 'typename', title: '类型', width: 150, align: 'center'},
+                {field: 'ticket_num', title: '购买票数', width: 150, align: 'center'},
+                {field: 'price', title: '票价', width: 150, align: 'center'},
+                {field: 'ticket_sum', title: '付款金额', width: 150, align: 'center'},
+                {field: 'username', title: '用户名', width: 150, align: 'center'},
+
+                {field: 'time', title: '下单时间', width: 150, align: 'center'},
+
+            ],
+        })
+
+    }
+
+    $('.nn').datetimepicker({
+        language: 'zh-CN',//显示中文
+        //format: 'yyyy-mm-dd hh:ii:ss',//显示格式
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>

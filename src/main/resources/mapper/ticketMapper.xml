@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.TicketDao">
+    <!--登录-->
+    <select id="findUser" resultType="com.jk.pojo.UserBean">
+        select * from y_users where username=#{username}
+    </select>
+    <!--总数-->
+    <select id="findTotal" resultType="int">
+        select count(*) from y_ticket t left join y_type y on t.type_id=y.id
+    </select>
+    <!--火车查询-->
+    <select id="findTicket" resultType="com.jk.pojo.TicketBean">
+        select * from y_ticket t left join y_type y on t.type_id=y.id
+           limit #{start},#{rows}
+    </select>
+    <!--根据id查询票-->
+    <select id="findTicketById" resultType="com.jk.pojo.TicketBean">
+        select * from y_ticket t left join y_type y on t.type_id=y.id where t.id=#{id}
+    </select>
+    <!--修改票数-->
+    <update id="updataPiao">
+        update y_ticket set ticket_count=ticket_count-#{num} where id=#{id}
+    </update>
+    <!--修改余额-->
+    <update id="updateMoney">
+        update y_users set money=money-#{value} where username=#{username}
+    </update>
+</mapper>

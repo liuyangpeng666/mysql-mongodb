@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- bootstrap-table -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script  src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入日期得css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <!-- 引入上传文件的css和js文件 -->
+    <script src="../js/bootstrap/bootstrap-fileinput/js/fileinput.js"></script>
+    <script src="../js/bootstrap/bootstrap-fileinput/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-fileinput/css/fileinput.css">
+</head>
+<body>
+<div class="container">
+    <br>
+    <br>
+    <center>
+        <h1>登录页面</h1>
+        <br>
+        <br>
+        <br>
+        <form id="userForm">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-3">
+                    <h5>账户名:</h5>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="username" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-md-offset-3">
+                    <h5>密码:</h5>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="pwd" class="form-control">
+                </div>
+            </div>
+        </form>
+        <br>
+        <br>
+        <button type="button" onclick="denglu()" class="btn btn-info ">登录</button>
+    </center>
+</div>
+</body>
+<script>
+    function denglu() {
+        $.ajax({
+            url: '/ticket/login',//后台请求地址
+            type: 'post',
+            data: $("#userForm").serialize(),//表单序列化
+            success: function (data) {
+                bootbox.alert({
+                    size: "small",
+                    title: "提示",
+                    message: data,
+                    callback: function () {
+                    }
+                })
+                if (data == '登录成功！！') {
+                    location.href = "/ticket/index";
+                }
+            }
+        })
+    }
+</script>
+</html>

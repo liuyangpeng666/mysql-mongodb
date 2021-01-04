@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/test_four?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: root
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/lyp
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+

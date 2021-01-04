@@ -1,0 +1,85 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+
+    <!-- 引入树插件的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-treeview/bootstrap-treeview.min.css">
+    <script src="../js/bootstrap/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+
+    <!-- 引入选项卡插件的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootStrap-addTabs/bootstrap.addtabs.css">
+    <script src="../js/bootstrap/bootStrap-addTabs//bootstrap.addtabs.min.js"></script>
+</head>
+<body>
+<!-- 导航 -->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <font color="white">
+            欢迎<label th:text="${session.user.username}"></label>登录,您的余额为：<span  th:text="${session.user.money}"></span>元
+        </font>
+    </div>
+</nav>
+<!-- 左右布局 -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <!-- 树 -->
+            <div id="myTree"></div>
+        </div>
+        <div class="col-md-10">
+            <!-- 选项卡 -->
+            <div id="myTabs">
+                <!-- 新选项卡 ：卡头-->
+                <ul class="nav nav-tabs" id="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" role="tab" data-toggle="tab">欢迎</a>
+                    </li>
+                </ul>
+
+                <!-- 选项卡下内容 -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        initTree();//初始化加载树
+    })
+
+
+    //初始化加载树
+    function initTree(){
+        $.ajax({
+            url:"../ticket/findTree",
+            type:"get",
+            success:function(data){
+                //加载树
+                $('#myTree').treeview({
+                    data:data,
+                    onNodeSelected:function(event,node) {//选中节点事件：操作选项卡
+                        //操作选项卡
+                        $.addtabs({iframeHeight: 550});//设置高度
+                        $.addtabs.add({
+                            id:node.id,
+                            title:node.text,
+                            url:"../"+node.href
+                        });
+                    }
+                })
+            }
+        });
+    }
+</script>
+</html>
